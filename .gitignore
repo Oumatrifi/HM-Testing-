@@ -1,0 +1,13 @@
+# Dependencies
+node_modules/
+package-lock.json
+
+# Build output
+dist/
+
+# Test Outputs and logs
+outputs/logs/
+outputs/reports/
+
+# Environment files
+.env.local

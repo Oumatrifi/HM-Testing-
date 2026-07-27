@@ -1,0 +1,21 @@
+{
+  "country": {
+    "targetCountry": "France",
+    "targetLanguage": "Français",
+    "targetUrlKeyword": "fr_fr"
+  },
+  "search": {
+    "productKeyword": "Chemise Relaxed Fit en coton",
+    "targetSize": "M",
+    "targetSizeFullName": "M"
+  },
+  "favorites": {
+    "alternateProductKeyword": "Jean",
+    "fallbackSearch": "T-shirt"
+  },
+  "user": {
+    "emailDomain": "@test-hm-auto.com",
+    "defaultPassword": "Password123!",
+    "birthDate": "1995-05-15"
+  }
+}
