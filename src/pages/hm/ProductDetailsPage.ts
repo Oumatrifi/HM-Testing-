@@ -16,7 +16,7 @@ export class ProductDetailsPage extends BasePage {
 
     this.productTitle = page.locator('h1.product-item-headline, h1[data-testid="product-title"], h1').first();
     this.sizePickerButton = page.locator('button[id*="picker"], button:has-text("Sélectionner la taille"), [data-testid="size-selector-btn"], button.picker-trigger').first();
-    this.sizeOptionM = page.locator('button:has-text(" M"), li:has-text(" M"), span:has-text(" M"), label:has-text(" M"), [data-size="M"]').first();
+    this.sizeOptionM = page.locator('button:text-is("M"), li:text-is("M"), span:text-is("M"), label:text-is("M"), [data-size="M"]').first();
     
     this.addToBagButton = page.locator('button:has-text("Ajouter"), button[data-testid="add-to-bag-button"], button.add-to-bag').first();
     this.addToFavoritesButton = page.locator('button[aria-label*="favoris"], button[aria-label*="Favoris"], button[data-testid="favourite-button"], button.favorite-btn, button.icon-favorite').first();
@@ -30,13 +30,13 @@ export class ProductDetailsPage extends BasePage {
     
     // Open size selector if dropdown or picker button exists
     if (await this.sizePickerButton.isVisible({ timeout: 3000 })) {
-      await this.clickElement(this.sizePickerButton, 'Menu déroulant des tailles');
+      await this.clickElement(this.sizePickerButton, 'Menu déroulant des tailles', true);
     }
 
     // Locate size option matching sizeText (e.g. M)
-    const targetSizeLocator = this.page.locator(`button:has-text(" ${sizeText}"), li:has-text(" ${sizeText}"), span:has-text(" ${sizeText}"), [aria-label*="Taille ${sizeText}"]`).first();
+    const targetSizeLocator = this.page.locator(`button:text-is("${sizeText}"), li:text-is("${sizeText}"), span:text-is("${sizeText}"), label:text-is("${sizeText}"), [aria-label*="Taille ${sizeText}"], [data-size="${sizeText}"]`).first();
     if (await targetSizeLocator.isVisible({ timeout: 5000 })) {
-      await this.clickElement(targetSizeLocator, `Option de taille ${sizeText}`);
+      await this.clickElement(targetSizeLocator, `Option de taille ${sizeText}`, true);
     } else {
       Logger.info(`Option de taille ${sizeText} sélectionnée par défaut ou via sélecteur direct.`);
     }

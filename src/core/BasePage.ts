@@ -25,11 +25,11 @@ export abstract class BasePage {
     await locator.waitFor({ state: 'visible', timeout });
   }
 
-  public async clickElement(locator: Locator, description: string): Promise<void> {
+  public async clickElement(locator: Locator, description: string, force: boolean = false): Promise<void> {
     Logger.info(`Clic sur : ${description}`);
     await locator.waitFor({ state: 'visible' });
     await locator.scrollIntoViewIfNeeded().catch(() => {});
-    await locator.click({ force: false });
+    await locator.click({ force });
   }
 
   public async fillInput(locator: Locator, text: string, description: string): Promise<void> {

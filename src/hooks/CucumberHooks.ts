@@ -4,19 +4,28 @@ import { CustomWorld } from './CustomWorld';
 import { ConfigLoader } from '../config/ConfigLoader';
 import { Logger } from '../utils/Logger';
 import { CookieBannerComponent } from '../pages/components/CookieBannerComponent';
+import { Browser, BrowserContext, Page } from '@playwright/test';
 
 const config = ConfigLoader.getInstance().getConfig();
 setDefaultTimeout(config.defaultTimeout);
 
+let globalBrowser: Browser;
+let globalContext: BrowserContext;
+let globalPage: Page;
+
 BeforeAll(async function () {
   Logger.info('=== Début de l\'exécution de la suite de tests H&M BDD ===');
+  globalBrowser = await BrowserFactory.createBrowser();
+  globalContext = await BrowserFactory.createContext(globalBrowser);
+  globalPage = await BrowserFactory.createPage(globalContext);
 });
 
 Before(async function (this: CustomWorld, scenario) {
   Logger.info(`Initialisation du scénario : "${scenario.pickle.name}"`);
-  this.browser = await BrowserFactory.createBrowser();
-  this.context = await BrowserFactory.createContext(this.browser);
-  this.page = await BrowserFactory.createPage(this.context);
+  this.browser = globalBrowser;
+  this.context = globalContext;
+  this.page = globalPage;
+  await this.context.clearCookies(); // Nettoyer les cookies pour éviter le blocage Akamai
   this.cookieBanner = new CookieBannerComponent(this.page);
 });
 
@@ -32,18 +41,17 @@ After(async function (this: CustomWorld, scenario) {
       Logger.error(`Impossible de prendre une capture d'écran d'échec : ${err}`);
     }
   }
-
-  if (this.page) {
-    await this.page.close().catch(() => {});
-  }
-  if (this.context) {
-    await this.context.close().catch(() => {});
-  }
-  if (this.browser) {
-    await this.browser.close().catch(() => {});
-  }
 });
 
 AfterAll(async function () {
   Logger.info('=== Fin de l\'exécution de la suite de tests H&M BDD ===');
+  if (globalPage) {
+    await globalPage.close().catch(() => {});
+  }
+  if (globalContext) {
+    await globalContext.close().catch(() => {});
+  }
+  if (globalBrowser) {
+    await globalBrowser.close().catch(() => {});
+  }
 });

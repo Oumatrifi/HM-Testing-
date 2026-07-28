@@ -5,9 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "cucumber-js",
-    "test:headed": "cross-env CROSS_ENV_HEADLESS=false SLOW_MO=1000 cucumber-js",
+    "test:headed": "cross-env CROSS_ENV_HEADLESS=false SLOW_MO=1000 BROWSER=firefox cucumber-js",
     "test:country": "cucumber-js --tags \"@country\"",
-    "test:country:headed": "cross-env CROSS_ENV_HEADLESS=false SLOW_MO=1500 cucumber-js --tags \"@country\"",
+    "test:country:headed": "cross-env CROSS_ENV_HEADLESS=false SLOW_MO=1500 BROWSER=firefox cucumber-js --tags \"@country\"",
     "test:auth": "cucumber-js --tags \"@auth\"",
     "test:cart": "cucumber-js --tags \"@cart or @search\"",
     "test:favorites": "cucumber-js --tags \"@favorites\"",
@@ -30,6 +30,8 @@
     "@cucumber/cucumber": "^10.9.0",
     "@playwright/test": "^1.48.0",
     "dotenv": "^16.4.5",
+    "playwright-extra": "^4.3.6",
+    "puppeteer-extra-plugin-stealth": "^2.11.2",
     "ts-node": "^10.9.2",
     "typescript": "^5.6.3",
     "winston": "^3.15.0"

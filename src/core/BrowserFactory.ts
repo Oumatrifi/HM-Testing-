@@ -1,6 +1,11 @@
-import { chromium, firefox, webkit, Browser, BrowserContext, Page } from '@playwright/test';
+import { firefox, webkit, Browser, BrowserContext, Page } from '@playwright/test';
+import { chromium } from 'playwright-extra';
+import StealthPlugin from 'puppeteer-extra-plugin-stealth';
 import { ConfigLoader } from '../config/ConfigLoader';
 import { Logger } from '../utils/Logger';
+
+// Add stealth plugin to bypass Akamai/Bot detection
+chromium.use(StealthPlugin());
 
 export class BrowserFactory {
   private static browser: Browser | null = null;
@@ -53,7 +58,17 @@ export class BrowserFactory {
       locale: 'fr-FR',
       timezoneId: 'Europe/Paris',
       acceptDownloads: true,
-      ignoreHTTPSErrors: true
+      ignoreHTTPSErrors: true,
+      userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:130.0) Gecko/20100101 Firefox/130.0',
+      extraHTTPHeaders: {
+        'Accept-Language': 'fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/png,image/svg+xml,*/*;q=0.8',
+        'Upgrade-Insecure-Requests': '1',
+        'Sec-Fetch-Dest': 'document',
+        'Sec-Fetch-Mode': 'navigate',
+        'Sec-Fetch-Site': 'none',
+        'Sec-Fetch-User': '?1'
+      }
     });
 
     return this.context;
